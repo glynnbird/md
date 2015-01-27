@@ -1,0 +1,19 @@
+nav#thenav.navbar.navbar-inverse.navbar-fixed-top(role="navigation")
+  div.container
+    div.navbar-header.hidden-xs.hidden-sm
+      a.navbar-brand(href="/") MD
+      
+    form.navbar-form.navbar-left(role="search",onsubmit="return saveDoc()")
+      div.form-group
+        button.myctrl.btn(type="button",onclick="newClicked()") New
+      div.form-group
+        button.myctrl.btn(type="button",onclick="loadClicked()") Load
+      div.form-group
+        input#doc_name.form-control.myctrl(type="text",placeholder="document name")
+      button#savebtn.myctrl.btn.btn-default(type="submit") Save
+
+    form.navbar-form.navbar-right(role="search",onsubmit="return saveDoc()")
+      div.form-group
+        button.myctrl.btn(type="button",onclick="settingsClicked()")
+          span.glyphicon.glyphicon-cog(aria-hidden="true") 
+  

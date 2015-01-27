@@ -1,0 +1,40 @@
+html, body {
+    height: 100%;
+}
+
+body {
+  margin-top:60px;
+}
+
+.myctrl {
+  margin-left:20px;
+}
+
+.container {
+  height:100%; 
+}
+#themarkdown {
+  width: 100%;
+  height: 100vh;
+  background-color: #eee;
+  overflow: scroll;
+  outline: none;
+  font-family: "Courier New", Courier, monospace
+}
+#rendered {
+  width: 100%;
+  height: 100vh;
+  overflow: scroll;
+}
+#cloudanturl {
+  width:90%;
+}
+
+@media print 
+{
+
+    #themarkdown { display:none}
+    #rendered { overflow:visible;}
+    #nav { display:none;}
+    .alert {display: none;}
+}
