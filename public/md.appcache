@@ -1,10 +1,13 @@
 CACHE MANIFEST
-
+# ^ this is a the cache manifest file
 
 NETWORK:
+# allow the app to make network connections for resources it hasn't got; it isn't an offline-only app
 *
 
+
 CACHE:
+# all of the things below are required to make this thing work offline
 /
 //code.jquery.com/jquery-1.11.2.min.js
 //code.jquery.com/ui/1.11.2/jquery-ui.js
@@ -18,3 +21,4 @@ CACHE:
 /js/mddoc.js
 /css/mddoc.css
 //maxcdn.bootstrapcdn.com/bootstrap/3.2.0/fonts/glyphicons-halflings-regular.woff
+/favicon.ico
