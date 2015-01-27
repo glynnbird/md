@@ -17,7 +17,6 @@ CACHE:
 /js/markdown.js
 /js/pouchdb-3.2.1.min.js
 /js/uuid.js
-/js/moment.js
 /js/mddoc.js
 /css/mddoc.css
 //maxcdn.bootstrapcdn.com/bootstrap/3.2.0/fonts/glyphicons-halflings-regular.woff

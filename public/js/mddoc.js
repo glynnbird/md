@@ -5,6 +5,10 @@ var doc_id = null;
 var last_saved = "";
 var alertnum=1;
 
+var getTS = function() {
+  return Math.round(+new Date()/1000);
+};
+
 var saveDoc = function() {
   if(doc_id === null) {
     var uuid4 = UUID.create()
@@ -14,7 +18,7 @@ var saveDoc = function() {
     doc_id: doc_id,
     doc_name: $('#doc_name').val(),
     body: $('#themarkdown').val(),
-    ts: moment().unix()
+    ts: getTS()
   };
   if(doc.doc_name.length==0) {
     alert("Please name your document before saving it");
