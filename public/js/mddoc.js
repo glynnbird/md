@@ -159,7 +159,7 @@ var getSyncConfig = function(callback) {
   });
 };
 
-var createAlert = function(title, message) {
+var createAlert = function(title, message, keep) {
   var num = alertnum++;
   var html = "<div id=\"alert" + num + "\" class=\"alert alert-warning alert-dismissible fade in\" role=\"alert\">\n" +
              "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
@@ -167,9 +167,11 @@ var createAlert = function(title, message) {
              "<strong>" + title + "</strong> "+message +
              "</div>";
   $('#alerts').html( $('#alerts').html() + html);
-  setTimeout(function() {
-    $('#alert' + num).alert('close');
-  }, 5000);
+  if(keep && keep===true) {
+    setTimeout(function() {
+      $('#alert' + num).alert('close');
+    }, 5000);
+  }
 };
 
 var historyClicked = function(id) {
@@ -213,11 +215,21 @@ var markdownChanged = function() {
 $( document ).ready(function() {
   // Handler for .ready() called.
   $('#thedoc').hide();
+  
+  // load any pre-saved sync config
   getSyncConfig(function(err, data) {
     console.log("sync data", err, data);
     if(data && data.length>0) {
       initiateSync(data);
     }
-  })
+  });
+  
+  // warn the user that there is a new version available
+  window.applicationCache.addEventListener('updateready', function() {
+    createAlert("NEW UPDATE READY", "Please refresh this page to pick up the latest version.", true)
+  });
+  
+  // poll the mothership to see if there's a new version
+  window.applicationCache.update();
 });
 
