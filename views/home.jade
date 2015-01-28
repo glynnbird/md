@@ -11,7 +11,18 @@ body
     div.header
       div#alerts
         
-    div.row
+    div#jumbo.jumbotron
+      img.pull-right.img-responsive(src="/img/md.png")
+      h1 MD
+      p.lead An offline-first, Markdown wordprocessor
+      ul
+        li write documents in Markdown, see it rendered as you type
+        li store your work locally using PouchDB
+        li continue working with or without an internet connection
+        li sync to the cloud - CouchDB or Cloudant
+      p.clearfix 
+            
+    div#thedoc.row
       div.col-lg-6 
         textarea#themarkdown.hidden-print(oninput="markdownChanged()").
           

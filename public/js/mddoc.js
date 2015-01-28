@@ -72,6 +72,7 @@ var loadDoc = function(id) {
       alert("Non-existant document!", id);
       return
     }
+    $('#jumbo').hide();
     $('#themarkdown').val(data.body);
     $('#doc_name').val(data.doc_name);
     doc_id = data.doc_id;
@@ -79,7 +80,8 @@ var loadDoc = function(id) {
     markdownChanged();
     $('#loadmodal').modal('hide');
     createAlert("Document loaded", data.doc_name);  
-  })  
+    $('#thedoc').show();
+  });
 }
 
 var newClicked = function() {
@@ -89,6 +91,8 @@ var newClicked = function() {
   last_saved="";
   markdownChanged();
   createAlert("New Document created", "");
+  $('#jumbo').hide();
+  $('#thedoc').show();
 };
 
 var loadClicked = function() {
@@ -208,6 +212,7 @@ var markdownChanged = function() {
 
 $( document ).ready(function() {
   // Handler for .ready() called.
+  $('#thedoc').hide();
   getSyncConfig(function(err, data) {
     console.log("sync data", err, data);
     if(data && data.length>0) {
