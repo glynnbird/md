@@ -168,6 +168,8 @@ var createAlert = function(title, message, keep) {
              "</div>";
   $('#alerts').html( $('#alerts').html() + html);
   if(keep && keep===true) {
+
+  } else {
     setTimeout(function() {
       $('#alert' + num).alert('close');
     }, 5000);
