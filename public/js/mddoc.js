@@ -135,7 +135,7 @@ var settingsSubmit = function() {
 
 var initiateSync = function(url) {
   console.log("initiating sync", url)
-  db.sync(url);
+  db.sync(url, { retry:true});
 }
 
 var saveSyncConfig = function(url) {
