@@ -19,6 +19,15 @@ and visit "http://localhost:3000/" in your browser. Alternatively, this app can 
 * disconnect yourself from the internet (or kill the node app.js, if you’re self-hosting)
 * refresh the app in the browser - it should still work!
 
+## How do I try it?
+
+The easiest way is to sign up for a Bluemix account and then click the button below:
+
+<a href="https://bluemix.net/deploy?repository=https://github.com/glynnbird/md" target="_blank"><img src="http://bluemix.net/deploy/button.png" alt="Deploy to Bluemix" /></a>
+
+This will create an running instance of 'md' on your Bluemix service. 
+
+
 ## How does it work?
 
 ### PouchDB
