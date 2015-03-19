@@ -21,12 +21,11 @@ and visit "http://localhost:3000/" in your browser. Alternatively, this app can 
 
 ## How do I try it?
 
-The easiest way is to sign up for a Bluemix account and then click the button below:
+The easiest way is to click the button below:
 
 <a href="https://bluemix.net/deploy?repository=https://github.com/glynnbird/md" target="_blank"><img src="http://bluemix.net/deploy/button.png" alt="Deploy to Bluemix" /></a>
 
-This will create an running instance of 'md' on your Bluemix service. 
-
+This will deploy this App to your Bluemix account, or allow you to create one first if you don't have one. Bluemix is IBM's Platform-as-a-Service and allows you to deploy your code together with open-source and proprietary services with a few clicks, or using the CloudFoundry tools. 
 
 ## How does it work?
 
