@@ -2,6 +2,10 @@
   "name": "mddoc",
   "version": "0.0.1",
   "description": "Markdown word processor",
+  "main": "app.js",
+  "scripts": {
+    "start": "./app.js"
+  },
   "dependencies": {
     "express": "4.8.5",
     "jade": "1.1.4"
