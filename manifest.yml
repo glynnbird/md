@@ -2,5 +2,5 @@
 applications:
 - name: md
   memory: 128M
-  host: md-${random-word}
+  host: mddoc
 

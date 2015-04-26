@@ -19,5 +19,5 @@ CACHE:
 //maxcdn.bootstrapcdn.com/bootstrap/3.2.0/fonts/glyphicons-halflings-regular.woff
 /favicon.ico
 /img/md.png
-/js/mddoc.js?1
-/css/mddoc.css?1
+/js/mddoc.js
+/css/mddoc.css

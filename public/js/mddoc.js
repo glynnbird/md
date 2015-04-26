@@ -239,11 +239,11 @@ $( document ).ready(function() {
   });
   
   // warn the user that there is a new version available
-  window.applicationCache.addEventListener('updateready', function() {
+/*  window.applicationCache.addEventListener('updateready', function() {
     createAlert("NEW UPDATE READY", "Please refresh this page to pick up the latest version.", true)
-  });
+  });*/
   
   // poll the mothership to see if there's a new version
-  window.applicationCache.update();
+//  window.applicationCache.update();
 });
 
