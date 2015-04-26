@@ -203,6 +203,11 @@ var markdownChanged = function() {
   var md_content = $('#themarkdown').val();
   var html = markdown.toHTML( md_content );
   $('#rendered').html(html);
+  setTimeout(function() {
+    FitToContent('themarkdown');
+    FitToContent('rendered');
+  },5);
+
   if(md_content != last_saved) {
 
     $('#savebtn').addClass('btn-danger');
@@ -213,6 +218,13 @@ var markdownChanged = function() {
     $('#savebtn').removeClass('btn-danger');
   }
 };
+
+var FitToContent = function (id)
+{
+  var x = $('#'+id)[0];
+  x.style.height = "1px";
+  x.style.height = (x.scrollHeight + 50)  + "px"; 
+}
 
 var togglePreview = function() {
   if($('#showpreview').is(':checked')) {
