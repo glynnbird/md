@@ -13,6 +13,11 @@ body {
 .container {
   height:100%; 
 }
+
+#togglepreviewlabel {
+  color: #ccc;
+}
+  
 #themarkdown {
   width: 100%;
   height: 100vh;

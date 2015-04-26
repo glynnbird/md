@@ -11,8 +11,12 @@ nav#thenav.navbar.navbar-inverse.navbar-fixed-top(role="navigation")
       div.form-group
         input#doc_name.form-control.myctrl(type="text",placeholder="document name")
       button#savebtn.myctrl.btn.btn-default(type="submit") Save
+      
 
     form.navbar-form.navbar-right(role="search",onsubmit="return saveDoc()")
+      div.form-group
+        label(id="togglepreviewlabel",for="showpreview") Preview &nbsp;
+        input(id="showpreview",onclick="togglePreview()",type="checkbox",checked)
       div.form-group
         button.myctrl.btn(type="button",onclick="settingsClicked()")
           span.glyphicon.glyphicon-cog(aria-hidden="true") 

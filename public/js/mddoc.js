@@ -214,6 +214,18 @@ var markdownChanged = function() {
   }
 };
 
+var togglePreview = function() {
+  if($('#showpreview').is(':checked')) {
+    $('#leftcol').removeClass('col-lg-12');
+    $('#leftcol').addClass('col-lg-6');
+    $('#rightcol').show();
+  } else {
+    $('#leftcol').removeClass('col-lg-6');
+    $('#leftcol').addClass('col-lg-12');
+    $('#rightcol').hide();
+  }
+}
+
 $( document ).ready(function() {
   // Handler for .ready() called.
   $('#thedoc').hide();

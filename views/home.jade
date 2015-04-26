@@ -7,7 +7,7 @@ head
 body
   include nav.jade
 
-  div.container
+  div.container-fluid
     div.header
       div#alerts
         
@@ -23,10 +23,10 @@ body
       p.clearfix 
             
     div#thedoc.row
-      div.col-lg-6 
+      div#leftcol.col-lg-6 
         textarea#themarkdown.hidden-print(oninput="markdownChanged()").
           
-      div.col-lg-6 
+      div#rightcol.col-lg-6 
         div#rendered
         
     div#loadmodal.modal.fade
