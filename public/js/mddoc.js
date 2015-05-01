@@ -200,12 +200,14 @@ var deleteClicked = function(id) {
 };
 
 var markdownChanged = function() {
+  var st = $('body').scrollTop();
   var md_content = $('#themarkdown').val();
   var html = markdown.toHTML( md_content );
   $('#rendered').html(html);
   setTimeout(function() {
     FitToContent('themarkdown');
     FitToContent('rendered');
+    $('body').scrollTop(st);
   },5);
 
   if(md_content != last_saved) {
