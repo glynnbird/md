@@ -24,7 +24,8 @@ body {
   background-color: #eee;
   overflow: scroll;
   outline: none;
-  font-family: "Courier New", Courier, monospace
+  font-family: "Courier New", Courier, monospace;
+  min-height:500px;
 }
 #rendered {
   width: 100%;
