@@ -135,18 +135,21 @@ var settingsSubmit = function() {
 
 var initiateSync = function(url) {
   console.log("initiating sync", url)
-  db.sync(url, { retry:true});
+  db.sync(url, { retry:true, live:true });
 }
 
 var saveSyncConfig = function(url) {
   var docname = "config";
   config.get(docname, function(err, data) {
-    var doc = {url : url}
+    var doc = null;
     if(!err) {
       doc = data;
       doc.url = url;
+    } else {
+      doc = { _id: docname, url: url}
     }
-    config.put({url: url}, docname, function(err, data) {
+    console.log(doc);
+    config.put(doc, function(err, data) {
       console.log("written config", err, data);
       $('#settingsmodal').modal('hide');
     });
