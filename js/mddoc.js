@@ -202,10 +202,12 @@ var deleteClicked = function(id) {
   })
 };
 
+var converter = new showdown.Converter();
+
 var markdownChanged = function() {
   var st = $('body').scrollTop();
   var md_content = $('#themarkdown').val();
-  var html = markdown.toHTML( md_content );
+  var html = converter.makeHtml( md_content );
   $('#rendered').html(html);
   setTimeout(function() {
     FitToContent('themarkdown');
