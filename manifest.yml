@@ -1,6 +1,0 @@
----
-applications:
-- name: md
-  memory: 128M
-  host: mddoc
-
