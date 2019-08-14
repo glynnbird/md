@@ -7,103 +7,112 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" media="all">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/showdown@1.9.0/dist/showdown.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/pouchdb/5.4.4/pouchdb.min.js"></script>
-  <script src="js/uuid.js"></script>
   <link rel="shortcut icon" href="favicon.ico">
-  <script src="js/mddoc.js"></script>
   <link rel="stylesheet" href="css/mddoc.css">
 </head>
 
 <body>
-  <nav id="thenav" role="navigation" class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-      <div class="navbar-header hidden-xs hidden-sm"><a href="/" class="navbar-brand">MD</a></div>
-      <form role="search" onsubmit="return saveDoc()" class="navbar-form navbar-left">
-        <div class="form-group"><button type="button" onclick="newClicked()" class="myctrl btn">New</button></div>
-        <div class="form-group"><button type="button" onclick="loadClicked()" class="myctrl btn">Load</button></div>
-        <div class="form-group"><input id="doc_name" type="text" placeholder="document name"
-            class="form-control myctrl"></div><button id="savebtn" type="submit"
-          class="myctrl btn btn-default">Save</button>
-      </form>
-      <form role="search" onsubmit="return saveDoc()" class="navbar-form navbar-right">
-        <div class="form-group"><label id="togglepreviewlabel" for="showpreview">Preview &nbsp;</label><input
-            id="showpreview" onclick="togglePreview()" type="checkbox" checked></div>
-        <div class="form-group"><button type="button" onclick="settingsClicked()" class="myctrl btn"><span
-              aria-hidden="true" class="glyphicon glyphicon-cog"></span></button></div>
-      </form>
-    </div>
-  </nav>
-  <div class="container-fluid">
-    <div class="header">
-      <div id="alerts"></div>
-    </div>
-    <div id="jumbo" class="jumbotron"><img src="img/md.png" class="pull-right img-responsive">
-      <h1>MD</h1>
-      <p class="lead">An offline-first, Markdown wordprocessor</p>
-      <ul>
-        <li>write documents in Markdown, see it rendered as you type</li>
-        <li>store your work locally using PouchDB</li>
-        <li>continue working with or without an internet connection</li>
-        <li>sync to the cloud - CouchDB or Cloudant</li>
-      </ul>
-      <p class="clearfix"></p>
-    </div>
-    <div id="thedoc" class="row">
-      <div id="leftcol" class="col-lg-6"><textarea id="themarkdown" oninput="markdownChanged()"
-          class="hidden-print"></textarea></div>
-      <div id="rightcol" class="col-lg-6">
-        <div id="rendered"></div>
+  <div id="app">
+    <nav id="thenav" role="navigation" class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header hidden-xs hidden-sm"><a href="/" class="navbar-brand">MD</a></div>
+        <form role="search"  class="navbar-form navbar-left">
+          <div class="form-group"><button type="button" v-on:click="newClicked"  class="myctrl btn">New</button></div>
+          <div class="form-group"><button type="button" v-on:click="loadClicked" class="myctrl btn">Load</button></div>
+          <div class="form-group"><input id="doc_name" v-model="docName" type="text" placeholder="document name"
+              class="form-control myctrl"></div><button id="savebtn" type="button"
+            class="myctrl btn btn-default" v-on:click="saveClicked">Save</button>
+        </form>
+        <form role="search" onsubmit="return saveDoc()" class="navbar-form navbar-right">
+          <div class="form-group"><label id="togglepreviewlabel" for="showpreview">Preview &nbsp;</label><input
+              id="showpreview" v-model="showPreview" type="checkbox" checked></div>
+          <div class="form-group"><button type="button" onclick="settingsClicked()" class="myctrl btn"><span
+                aria-hidden="true" class="glyphicon glyphicon-cog"></span></button></div>
+        </form>
       </div>
-    </div>
-    <div id="loadmodal" class="modal fade">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header"><button type="button" data-dismiss="modal" aria-label="Close" class="close"><span
-                aria-hidden="true"></span></button>
-            <h4 class="modal-title">My Documents</h4>
-          </div>
-          <div class="modal-body">
-            <table id="mydocuments" class="table"></table>
-          </div>
-          <div class="modal-footer"><button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+    </nav>
+    <div class="container-fluid">
+      <div class="header">
+        <div id="alerts"></div>
+        <table v-show="docList.length > 0">
+          <tr v-for="doc in docList">
+            <td><button class="btn" v-on:click="loadDoc(doc)">{{ doc.doc_name }}</button></td>
+            <td><button class="btn btn-danger">Delete</button></td>
+          </tr>
+        </table>
+      </div>
+      <div id="jumbo" class="jumbotron" v-show="showJumbo"><img src="img/md.png" class="pull-right img-responsive">
+        <h1>MD</h1>
+        <p class="lead">An offline-first, Markdown wordprocessor</p>
+        <ul>
+          <li>write documents in Markdown, see it rendered as you type</li>
+          <li>store your work locally using PouchDB</li>
+          <li>continue working with or without an internet connection</li>
+          <li>sync to the cloud - CouchDB or Cloudant</li>
+        </ul>
+        <p class="clearfix"></p>
+      </div>
+      <div id="thedoc" class="row">
+        <div id="leftcol" class="col-lg-6">
+          <textarea id="themarkdown" class="hidden-print" v-model="markdown"></textarea></div>
+        <div id="rightcol" class="col-lg-6" v-show="showPreview">
+          <div id="rendered" v-html="convertedMarkdown"></div>
+        </div>
+      </div>
+      <div id="loadmodal" class="modal fade">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header"><button type="button" data-dismiss="modal" aria-label="Close" class="close"><span
+                  aria-hidden="true"></span></button>
+              <h4 class="modal-title">My Documents</h4>
+            </div>
+            <div class="modal-body">
+              <table id="mydocuments" class="table"></table>
+            </div>
+            <div class="modal-footer"><button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div id="settingsmodal" class="modal fade">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header"><button type="button" data-dismiss="modal" aria-label="Close" class="close"><span
-                aria-hidden="true"></span></button>
-            <h4 class="modal-title">Settings</h4>
-          </div>
-          <div class="modal-body">
-            <p>If you would like your documents backed up to Cloudant, then simply add the URL of read/writable database
-              in the form below.</p>
-            <ul>
-              <li>Sign-up for a Cloudant account</li>
-              <li>Create a new database </li>
-              <li>In the permissions tab, generate a new api key</li>
-              <li>Make the generated api have "reader" & writer access</li>
-              <li>Enable CORS access</li>
-              <li>Construct the url: https://APIKEY:PASSWORD@HOSTNAME.cloudant.com/DATABASE_NAME</li>
-            </ul>
-            <form onsubmit="return settingsSubmit()" class="form">
-              <div class="form-group"><input id="cloudanturl" type="url" placeholder="cloudant url"
-                  class="form-control myctrl"></div><button type="submit" class="myctrl btn btn-danger">Save</button>
-            </form>
-          </div>
-          <div class="modal-footer"><button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+      <div id="settingsmodal" class="modal fade">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header"><button type="button" data-dismiss="modal" aria-label="Close" class="close"><span
+                  aria-hidden="true"></span></button>
+              <h4 class="modal-title">Settings</h4>
+            </div>
+            <div class="modal-body">
+              <p>If you would like your documents backed up to Cloudant, then simply add the URL of read/writable
+                database
+                in the form below.</p>
+              <ul>
+                <li>Sign-up for a Cloudant account</li>
+                <li>Create a new database </li>
+                <li>In the permissions tab, generate a new api key</li>
+                <li>Make the generated api have "reader" & writer access</li>
+                <li>Enable CORS access</li>
+                <li>Construct the url: https://APIKEY:PASSWORD@HOSTNAME.cloudant.com/DATABASE_NAME</li>
+              </ul>
+              <form onsubmit="return settingsSubmit()" class="form">
+                <div class="form-group"><input id="cloudanturl" type="url" placeholder="cloudant url"
+                    class="form-control myctrl"></div><button type="submit" class="myctrl btn btn-danger">Save</button>
+              </form>
+            </div>
+            <div class="modal-footer"><button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/showdown@1.9.0/dist/showdown.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pouchdb@7.1.1/dist/pouchdb.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="js/uuid.js"></script>
+  <script src="js/mddoc.js"></script>
 </body>
 
 </html>
