@@ -5,45 +5,48 @@
 <head>
   <title>MD - Markdown word processor</title>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" media="all">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="shortcut icon" href="favicon.ico">
   <link rel="stylesheet" href="css/mddoc.css">
 </head>
 
 <body>
   <div id="app">
-    <nav id="thenav" role="navigation" class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header hidden-xs hidden-sm"><a href="/" class="navbar-brand">MD</a></div>
-        <form role="search"  class="navbar-form navbar-left">
-          <div class="form-group"><button type="button" v-on:click="newClicked"  class="myctrl btn">New</button></div>
-          <div class="form-group"><button type="button" v-on:click="loadClicked" class="myctrl btn">Load</button></div>
-          <div class="form-group"><input id="doc_name" v-model="docName" type="text" placeholder="document name"
-              class="form-control myctrl"></div><button id="savebtn" type="button"
-            class="myctrl btn btn-default" v-on:click="saveClicked">Save</button>
-        </form>
-        <form role="search" onsubmit="return saveDoc()" class="navbar-form navbar-right">
-          <div class="form-group"><label id="togglepreviewlabel" for="showpreview">Preview &nbsp;</label><input
-              id="showpreview" v-model="showPreview" type="checkbox" checked></div>
-          <div class="form-group"><button type="button" onclick="settingsClicked()" class="myctrl btn"><span
-                aria-hidden="true" class="glyphicon glyphicon-cog"></span></button></div>
-        </form>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">MD</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link active" href="#" v-on:click="newClicked">New</a>
+          <a class="nav-item nav-link" href="#" v-on:click="loadClicked">Load</a>
+        </div>
       </div>
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" v-model="docName" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="button" v-on:click="saveClicked">Save</button>
+      </form>
     </nav>
+
     <div class="container-fluid">
-      <div class="header">
-        <div id="alerts"></div>
-        <table v-show="docList.length > 0">
+      <div class="alert alert-secondary" role="alert" v-show="docList.length > 0">
+        <button type="button" v-on:click="dismissDocListClicked" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <table>
           <tr v-for="doc in docList">
             <td><button class="btn" v-on:click="loadDoc(doc)">{{ doc.doc_name }}</button></td>
             <td><button class="btn btn-danger">Delete</button></td>
           </tr>
         </table>
       </div>
-      <div id="jumbo" class="jumbotron" v-show="showJumbo"><img src="img/md.png" class="pull-right img-responsive">
+
+      <div id="jumbo" class="jumbotron" v-show="showJumbo">
+        <img src="img/md.png" class="pull-right img-responsive">
         <h1>MD</h1>
         <p class="lead">An offline-first, Markdown wordprocessor</p>
         <ul>
@@ -54,57 +57,15 @@
         </ul>
         <p class="clearfix"></p>
       </div>
-      <div id="thedoc" class="row">
-        <div id="leftcol" class="col-lg-6">
+
+      <div id="thedoc" class="row" v-show="!showJumbo">
+        <div id="leftcol" class="col-sm">
           <textarea id="themarkdown" class="hidden-print" v-model="markdown"></textarea></div>
-        <div id="rightcol" class="col-lg-6" v-show="showPreview">
+        <div id="rightcol" class="col-sm" v-show="showPreview">
           <div id="rendered" v-html="convertedMarkdown"></div>
         </div>
       </div>
-      <div id="loadmodal" class="modal fade">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header"><button type="button" data-dismiss="modal" aria-label="Close" class="close"><span
-                  aria-hidden="true"></span></button>
-              <h4 class="modal-title">My Documents</h4>
-            </div>
-            <div class="modal-body">
-              <table id="mydocuments" class="table"></table>
-            </div>
-            <div class="modal-footer"><button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="settingsmodal" class="modal fade">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header"><button type="button" data-dismiss="modal" aria-label="Close" class="close"><span
-                  aria-hidden="true"></span></button>
-              <h4 class="modal-title">Settings</h4>
-            </div>
-            <div class="modal-body">
-              <p>If you would like your documents backed up to Cloudant, then simply add the URL of read/writable
-                database
-                in the form below.</p>
-              <ul>
-                <li>Sign-up for a Cloudant account</li>
-                <li>Create a new database </li>
-                <li>In the permissions tab, generate a new api key</li>
-                <li>Make the generated api have "reader" & writer access</li>
-                <li>Enable CORS access</li>
-                <li>Construct the url: https://APIKEY:PASSWORD@HOSTNAME.cloudant.com/DATABASE_NAME</li>
-              </ul>
-              <form onsubmit="return settingsSubmit()" class="form">
-                <div class="form-group"><input id="cloudanturl" type="url" placeholder="cloudant url"
-                    class="form-control myctrl"></div><button type="submit" class="myctrl btn btn-danger">Save</button>
-              </form>
-            </div>
-            <div class="modal-footer"><button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
-            </div>
-          </div>
-        </div>
-      </div>
+
     </div>
   </div>
 

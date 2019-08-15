@@ -5,6 +5,7 @@ var alertnum = 1
 var db = new PouchDB('md')
 
 var createAlert = function(title, message, keep) {
+  console.log(title, message, keep)
 /*  var num = alertnum++;
   var html = "<div id=\"alert" + num + "\" class=\"alert alert-warning alert-dismissible fade in\" role=\"alert\">\n" +
              "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
@@ -89,7 +90,7 @@ var app = new Vue({
       this.docList = []
     },
     saveClicked: async function() {
-      if(this.docId === null) {
+      if(!this.docId) {
         var uuid4 = UUID.create()
         this.docId = uuid4.toString();
       }
@@ -117,6 +118,9 @@ var app = new Vue({
       this.docName = doc.doc_name
       this.showJumbo = false
       this.docId = doc.doc_id
+      this.docList = []
+    },
+    dismissDocListClicked: function() {
       this.docList = []
     }
   }
